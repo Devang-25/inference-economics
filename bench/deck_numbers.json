@@ -1,0 +1,305 @@
+{
+  "workload": {
+    "requests": 3000,
+    "duration_s": 86.1,
+    "rps": 34.8,
+    "prefill_tok_s": 28297,
+    "decode_tok_s": 14929,
+    "prompt_p50": 1108,
+    "prompt_p95": 1317,
+    "prompt_p99": 1924,
+    "output_p50": 275,
+    "output_p95": 1424
+  },
+  "slo": {
+    "ttft_p95_ms": 1000,
+    "tpot_p95_ms": 50
+  },
+  "hardware": {
+    "kv_kib_per_token": 320.0,
+    "kv_tokens_per_replica": 513100
+  },
+  "stages": [
+    {
+      "key": "s0",
+      "title": "Stock vLLM defaults",
+      "lever": "continuous batching + PagedAttention, FP16",
+      "gpus": 32,
+      "monthly_usd": 57600,
+      "usd_per_1m": 0.5141,
+      "ttft_p95_ms": 170,
+      "tpot_p95_ms": 39.6,
+      "batch": 39,
+      "kv_waste_pct": 0.6,
+      "prefix_hit_pct": 0.0,
+      "cache_hit_pct": 0.0,
+      "spec_accept_pct": 0,
+      "spec_tokens_per_step": 0.0,
+      "quality_delta_pct": 0.0,
+      "slo_held": true,
+      "cum_vs_stock": 1.0,
+      "detail": {
+        "billable_tokens_per_s": 43226.28114935855,
+        "billable_output_tokens_per_s": 14929.380869360537,
+        "replicas_big": 8,
+        "replicas_small": 0,
+        "gpus_big": 32,
+        "gpus_small": 0
+      }
+    },
+    {
+      "key": "s1",
+      "title": "Prefix caching",
+      "lever": "radix tree over resident KV blocks",
+      "gpus": 20,
+      "monthly_usd": 36000,
+      "usd_per_1m": 0.3213,
+      "ttft_p95_ms": 141,
+      "tpot_p95_ms": 42.1,
+      "batch": 54,
+      "kv_waste_pct": 0.6,
+      "prefix_hit_pct": 63.9,
+      "cache_hit_pct": 0.0,
+      "spec_accept_pct": 0,
+      "spec_tokens_per_step": 0.0,
+      "quality_delta_pct": 0.0,
+      "slo_held": true,
+      "cum_vs_stock": 1.6,
+      "detail": {
+        "billable_tokens_per_s": 43226.28114935855,
+        "billable_output_tokens_per_s": 14929.380869360537,
+        "replicas_big": 5,
+        "replicas_small": 0,
+        "gpus_big": 20,
+        "gpus_small": 0
+      }
+    },
+    {
+      "key": "s2",
+      "title": "Quantization (INT8 W8A8)",
+      "lever": "halve weight bytes and KV bytes",
+      "gpus": 8,
+      "monthly_usd": 14400,
+      "usd_per_1m": 0.1285,
+      "ttft_p95_ms": 111,
+      "tpot_p95_ms": 36.6,
+      "batch": 98,
+      "kv_waste_pct": 0.6,
+      "prefix_hit_pct": 73.9,
+      "cache_hit_pct": 0.0,
+      "spec_accept_pct": 0,
+      "spec_tokens_per_step": 0.0,
+      "quality_delta_pct": -0.3,
+      "slo_held": true,
+      "cum_vs_stock": 4.0,
+      "detail": {
+        "billable_tokens_per_s": 43226.28114935855,
+        "billable_output_tokens_per_s": 14929.380869360537,
+        "replicas_big": 2,
+        "replicas_small": 0,
+        "gpus_big": 8,
+        "gpus_small": 0
+      }
+    },
+    {
+      "key": "s3",
+      "title": "Speculative decoding",
+      "lever": "1B drafts 4 tokens, 70B verifies in one pass",
+      "gpus": 8,
+      "monthly_usd": 14400,
+      "usd_per_1m": 0.1285,
+      "ttft_p95_ms": 133,
+      "tpot_p95_ms": 44.5,
+      "batch": 122,
+      "kv_waste_pct": 0.6,
+      "prefix_hit_pct": 73.9,
+      "cache_hit_pct": 0.0,
+      "spec_accept_pct": 63,
+      "spec_tokens_per_step": 2.42,
+      "quality_delta_pct": -0.3,
+      "slo_held": true,
+      "cum_vs_stock": 4.0,
+      "detail": {
+        "billable_tokens_per_s": 43226.28114935855,
+        "billable_output_tokens_per_s": 14929.380869360537,
+        "replicas_big": 2,
+        "replicas_small": 0,
+        "gpus_big": 8,
+        "gpus_small": 0
+      }
+    },
+    {
+      "key": "s4",
+      "title": "Routing + response cache",
+      "lever": "most traffic never touches the 70B",
+      "gpus": 5,
+      "monthly_usd": 9000,
+      "usd_per_1m": 0.0803,
+      "ttft_p95_ms": 60,
+      "tpot_p95_ms": 17.8,
+      "batch": 47,
+      "kv_waste_pct": 0.8,
+      "prefix_hit_pct": 80.1,
+      "cache_hit_pct": 25.9,
+      "spec_accept_pct": 0,
+      "spec_tokens_per_step": 0.0,
+      "quality_delta_pct": -0.31,
+      "slo_held": true,
+      "cum_vs_stock": 6.4,
+      "detail": {
+        "billable_tokens_per_s": 43226.28114935855,
+        "billable_output_tokens_per_s": 14929.380869360537,
+        "replicas_big": 1,
+        "replicas_small": 1,
+        "gpus_big": 4,
+        "gpus_small": 1,
+        "escalated_requests": 80,
+        "escalation_pct": 2.6666666666666665,
+        "small_share_pct": 68.0,
+        "under_route_pct": 2.6666666666666665,
+        "over_route_pct": 9.066666666666666
+      }
+    }
+  ],
+  "headline": {
+    "gpus_before": 32,
+    "gpus_after": 5,
+    "monthly_before": 57600,
+    "monthly_after": 9000,
+    "monthly_saved": 48600,
+    "speedup": 6.4,
+    "ttft_p95_ms": 60,
+    "tpot_p95_ms": 17.8,
+    "quality_delta_pct": -0.31
+  },
+  "legacy": {
+    "gpus": 32,
+    "static_ttft_s": 305,
+    "stock_ttft_ms": 170,
+    "static_tok_s": 398,
+    "stock_tok_s": 1484,
+    "throughput_ratio": 3.7
+  },
+  "spike": {
+    "serve_everything": {
+      "ttft_p95_ms": 34878.124091445396,
+      "tpot_p95_ms": 69.88800267513048,
+      "served": 1500,
+      "shed": 0,
+      "slo_held": false
+    },
+    "admission_control": {
+      "ttft_p95_ms": 882.3887996599069,
+      "tpot_p95_ms": 28.65617570425374,
+      "served": 645,
+      "shed": 855,
+      "slo_held": true
+    }
+  },
+  "validation": {
+    "passed": 11,
+    "total": 11,
+    "worst_error_pct": 6.5,
+    "points": [
+      {
+        "name": "Llama-3.1-70B parameter count",
+        "source": "Meta model card",
+        "reference": "70.60B",
+        "modeled": "70.55B",
+        "error_pct": -0.06743968271953636,
+        "tolerance_pct": 1.0,
+        "kind": "point"
+      },
+      {
+        "name": "Llama-3.1-8B parameter count",
+        "source": "Meta model card",
+        "reference": "8.03B",
+        "modeled": "8.03B",
+        "error_pct": -6.216687421106835e-05,
+        "tolerance_pct": 1.0,
+        "kind": "point"
+      },
+      {
+        "name": "70B FP16 KV cache per token",
+        "source": "architecture arithmetic",
+        "reference": "320 KiB",
+        "modeled": "320 KiB",
+        "error_pct": 0.0,
+        "tolerance_pct": 1.0,
+        "kind": "point"
+      },
+      {
+        "name": "70B TP4 weight-read floor per decode step",
+        "source": "HBM arithmetic",
+        "reference": "13.2 ms",
+        "modeled": "13.2 ms",
+        "error_pct": -0.28212971506105045,
+        "tolerance_pct": 5.0,
+        "kind": "point"
+      },
+      {
+        "name": "70B TP4 FP16 single-stream decode",
+        "source": "published range 40-70 tok/s",
+        "reference": "55 tok/s",
+        "modeled": "59 tok/s",
+        "error_pct": 6.525857846798973,
+        "tolerance_pct": 30.0,
+        "kind": "point"
+      },
+      {
+        "name": "70B TP4 FP16 prefill throughput",
+        "source": "published range 8-12K tok/s",
+        "reference": "10,000 tok/s",
+        "modeled": "9,535 tok/s",
+        "error_pct": -4.653794863773382,
+        "tolerance_pct": 30.0,
+        "kind": "point"
+      },
+      {
+        "name": "INT8 W8A8 decode speedup vs FP16",
+        "source": "published range 1.5-2.0x",
+        "reference": "1.75x",
+        "modeled": "1.81x",
+        "error_pct": 3.6537250638806005,
+        "tolerance_pct": 20.0,
+        "kind": "point"
+      },
+      {
+        "name": "AWQ INT4 prefill time vs FP16 (expected >1)",
+        "source": "W4A16 dequant overhead",
+        "reference": "1.12x",
+        "modeled": "1.11x",
+        "error_pct": -1.3299307486653944,
+        "tolerance_pct": 10.0,
+        "kind": "point"
+      },
+      {
+        "name": "PagedAttention KV waste (16-token blocks)",
+        "source": "vLLM paper: <4%",
+        "reference": "\u2264 4.00%",
+        "modeled": "0.50%",
+        "error_pct": 0.0,
+        "tolerance_pct": 0.0,
+        "kind": "upper_bound"
+      },
+      {
+        "name": "Expected tokens/step, alpha=0.8 k=4",
+        "source": "geometric series (closed form)",
+        "reference": "3.362",
+        "modeled": "3.362",
+        "error_pct": -0.01189767995240797,
+        "tolerance_pct": 1.0,
+        "kind": "point"
+      },
+      {
+        "name": "70B TP4 FP16 cached tokens per replica",
+        "source": "capacity arithmetic",
+        "reference": "513,000",
+        "modeled": "513,100",
+        "error_pct": 0.01949317738791423,
+        "tolerance_pct": 2.0,
+        "kind": "point"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+# Everything the stage demo needs. Deliberately tiny: no torch, no CUDA, no
+# network. The demo must run on a laptop with no GPU and no Wi-Fi.
+rich>=13.7
+pytest>=8.0
+
+# Only needed to (re)build the slide deck from bench/deck_numbers.json.
+python-pptx>=1.0
+
+# Only needed to RECORD the real-API cassette (infeng/realbench.py).
+# Replaying the committed cassette needs nothing.
+anthropic>=0.40
